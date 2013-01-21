@@ -71,8 +71,7 @@ public class MapDialog extends JFrame {
 		// KÄYTTÖLIITTYMÄÄN
 		// KAIKKIEN XML-DATASTA HAETTUJEN KERROSTEN VALINTALAATIKOT MALLIN
 		// MUKAAN
-		leftPanel
-				.add(new LayerCheckBox("mk_aluevaraus", "Aluevaraukset", true));
+		leftPanel.add(new LayerCheckBox("mk_aluevaraus", "Aluevaraukset", true));
 		leftPanel.add(new LayerCheckBox("mk_osaalueet", "Osa-alueet", false));
 		leftPanel.add(new LayerCheckBox("mk_tiet", "Liikenne", false));
 

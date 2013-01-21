@@ -16,6 +16,10 @@ public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 	
 	private Socket s;
 	private WMSCapabilitiesParser parser;
+	
+	public LounaispaikkaWMSConnection() {
+		
+	}
 
 	@Override
 	public String getCapabilities() {
@@ -39,12 +43,6 @@ public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 		pw.println("Host: kartat.lounaispaikka.fi");
 		pw.println("");
 		pw.flush();
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		try {
 			while(br.read() != -1) 
 				System.out.println(br.readLine());
