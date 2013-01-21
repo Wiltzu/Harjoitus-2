@@ -34,6 +34,7 @@ public class LounaispaikkaCapParser implements WMSCapabilitiesParser {
 		System.out.println("ennen parsea");
 		try {
 			System.out.print(dBuilder.isValidating());
+			xmlDocument.skip(267);
 			document = dBuilder.parse(xmlDocument);
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
