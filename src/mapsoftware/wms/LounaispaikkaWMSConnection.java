@@ -1,10 +1,9 @@
 package mapsoftware.wms;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
@@ -20,17 +19,24 @@ public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 	public LounaispaikkaWMSConnection() {
 		
 	}
+	
+	public LounaispaikkaWMSConnection(WMSCapabilitiesParser parser) {
+		this.parser = parser;
+	}
+	
 
 	@Override
 	public String[] getCapabilities() {
 		PrintWriter pw = null;
 		InputStreamReader isr = null;
 		BufferedReader br = null;
+		InputStream is = null;
 		try {
 			s = new Socket(InetAddress.getByName("kartat.lounaispaikka.fi"), 80);
 			pw = new PrintWriter(s.getOutputStream());
 			isr = new InputStreamReader(s.getInputStream());
 			br = new BufferedReader(isr);
+			is = s.getInputStream();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -52,8 +58,11 @@ public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 			e.printStackTrace();
 		}
 		String[] result = {""};
-		
+		if(parser != null) {
+			return parser.parseDocument(is);
+		}
 		return result;
+		
 	}
 
 	@Override
