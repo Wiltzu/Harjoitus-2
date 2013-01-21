@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.List;
 
 public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 	
@@ -57,7 +58,7 @@ public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String[] result = {""};
+		List<LayerInformation> result = null;
 		if(parser != null) {
 			return parser.parseDocument(is);
 		}
