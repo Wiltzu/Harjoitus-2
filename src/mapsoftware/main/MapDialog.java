@@ -46,7 +46,7 @@ public class MapDialog extends JFrame {
 		getContentPane().setLayout(new BorderLayout());
 
 		// ALLA OLEVAN TESTIRIVIN VOI KORVATA JOLLAKIN MUULLA ERI ALOITUSNÄKYMÄN
-		// LATAAVALLA RIVILLÄ
+		// LATAAVALLA RIVILL�
 		WMSConnectionStrategy conStra = new LounaispaikkaWMSConnection(new LounaispaikkaCapParser());
 		conStra.getCapabilities();
 		imageLabel

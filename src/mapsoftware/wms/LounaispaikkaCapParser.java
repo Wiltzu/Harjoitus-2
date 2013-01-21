@@ -39,7 +39,7 @@ public class LounaispaikkaCapParser implements WMSCapabilitiesParser {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		System.out.println("ennen capabilityjen hakua");
