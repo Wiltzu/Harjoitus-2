@@ -26,7 +26,7 @@ public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 	
 
 	@Override
-	public String[] getCapabilities() {
+	public List<LayerInformation> getCapabilities() {
 		PrintWriter pw = null;
 		InputStreamReader isr = null;
 		BufferedReader br = null;
