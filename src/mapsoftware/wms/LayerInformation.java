@@ -1,20 +1,20 @@
 package mapsoftware.wms;
 
 public class LayerInformation {
-	private final String title, parameter;
+	private final String name, title;
 	
-	public LayerInformation(String title, String parameter) {
+	public LayerInformation(String name, String title) {
 		super();
+		this.name = name;
 		this.title = title;
-		this.parameter = parameter;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public String getTitle() {
 		return title;
-	}
-
-	public String getParameter() {
-		return parameter;
 	}
 	
 	
