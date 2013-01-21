@@ -22,7 +22,7 @@ public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 	}
 
 	@Override
-	public String getCapabilities() {
+	public String[] getCapabilities() {
 		PrintWriter pw = null;
 		InputStreamReader isr = null;
 		BufferedReader br = null;
@@ -43,6 +43,7 @@ public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 		pw.println("Host: kartat.lounaispaikka.fi");
 		pw.println("");
 		pw.flush();
+		
 		try {
 			while(br.read() != -1) 
 				System.out.println(br.readLine());
@@ -50,8 +51,9 @@ public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		String[] result = {""};
 		
-		return "";
+		return result;
 	}
 
 	@Override
