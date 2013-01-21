@@ -51,13 +51,13 @@ public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 		pw.println("");
 		pw.flush();
 		
-		try {
-			while(br.read() != -1) 
-				System.out.println(br.readLine());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			while(br.read() != -1) 
+//				System.out.println(br.readLine());
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		List<LayerInformation> result = null;
 		if(parser != null) {
 			return parser.parseDocument(is);

@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import mapsoftware.wms.LounaispaikkaCapParser;
 import mapsoftware.wms.LounaispaikkaWMSConnection;
 import mapsoftware.wms.WMSConnectionStrategy;
 
@@ -46,7 +47,7 @@ public class MapDialog extends JFrame {
 
 		// ALLA OLEVAN TESTIRIVIN VOI KORVATA JOLLAKIN MUULLA ERI ALOITUSNÄKYMÄN
 		// LATAAVALLA RIVILLÄ
-		WMSConnectionStrategy conStra = new LounaispaikkaWMSConnection();
+		WMSConnectionStrategy conStra = new LounaispaikkaWMSConnection(new LounaispaikkaCapParser());
 		conStra.getCapabilities();
 		imageLabel
 				.setIcon(new ImageIcon(
