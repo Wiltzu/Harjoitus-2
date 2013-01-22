@@ -107,6 +107,7 @@ public class MapDialog extends JFrame {
 
 		pack();
 		setVisible(true);
+		System.out.println(imageLabel.getHeight() + " " + imageLabel.getWidth());
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -127,36 +128,60 @@ public class MapDialog extends JFrame {
 				// VASEMMALLE SIIRTYMINEN KARTALLA
 				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA PÄIVITÄ
 				// KUVA
+				Area.move("L");
+				try { updateImage(); } catch(Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 			if (e.getSource() == rightB) {
 				// TODO:
 				// OIKEALLE SIIRTYMINEN KARTALLA
 				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA PÄIVITÄ
 				// KUVA
+				Area.move("R");
+				try { updateImage(); } catch(Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 			if (e.getSource() == upB) {
 				// TODO:
 				// YLÖSPÄIN SIIRTYMINEN KARTALLA
 				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA PÄIVITÄ
 				// KUVA
+				Area.move("U");
+				try { updateImage(); } catch(Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 			if (e.getSource() == downB) {
 				// TODO:
 				// ALASPÄIN SIIRTYMINEN KARTALLA
 				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA PÄIVITÄ
 				// KUVA
+				Area.move("D");
+				try { updateImage(); } catch(Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 			if (e.getSource() == zoomInB) {
 				// TODO:
 				// ZOOM IN -TOIMINTO
 				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA PÄIVITÄ
 				// KUVA
+				Area.move("I");
+				try { updateImage(); } catch(Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 			if (e.getSource() == zoomOutB) {
 				// TODO:
 				// ZOOM OUT -TOIMINTO
 				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA PÄIVITÄ
 				// KUVA
+				Area.move("O");
+				try { updateImage(); } catch(Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 		}
 	}
