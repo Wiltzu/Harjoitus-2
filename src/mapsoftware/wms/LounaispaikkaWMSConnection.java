@@ -14,12 +14,12 @@ import java.util.List;
 
 public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 	
+	private static final String GET_CAP_REQ_ADDRESS = "/wms/maakuntakaava?version=1.1.1&service=WMS&request=GetCapabilities";
+	private static final int HTTP_PORT = 80;
+	private static final String HOST = "kartat.lounaispaikka.fi";
 	private Socket s;
-	private WMSCapabilitiesParser parser;
+	private final WMSCapabilitiesParser parser;
 	
-	public LounaispaikkaWMSConnection() {
-		
-	}
 	
 	public LounaispaikkaWMSConnection(WMSCapabilitiesParser parser) {
 		this.parser = parser;
@@ -29,41 +29,33 @@ public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 	@Override
 	public List<LayerInformation> getCapabilities() {
 		PrintWriter pw = null;
-		InputStreamReader isr = null;
-		BufferedReader br = null;
 		InputStream is = null;
 		try {
-			s = new Socket(InetAddress.getByName("kartat.lounaispaikka.fi"), 80);
+			s = new Socket(InetAddress.getByName(HOST), HTTP_PORT);
 			pw = new PrintWriter(s.getOutputStream());
-			isr = new InputStreamReader(s.getInputStream());
-			br = new BufferedReader(isr);
 			is = s.getInputStream();
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
+			//problem with constant address
 			e.printStackTrace();
 		} catch (IOException e) {
-			
+			//socket problem
 			e.printStackTrace();
 		}
 		
-		pw.println("GET /wms/maakuntakaava?version=1.1.1&service=WMS&request=GetCapabilities HTTP/1.1");
-		pw.println("Host: kartat.lounaispaikka.fi");
+		pw.println("GET " + GET_CAP_REQ_ADDRESS + " HTTP/1.1");
+		pw.println("Host: " + HOST);
 		pw.println("");
 		pw.flush();
 		
-		List<LayerInformation> result = null;
-		if(parser != null) {
-			return parser.parseDocument(is);
-		}
-		return result;
-		
+		return parser.parseDocument(is);
 	}
 
 	@Override
-	public URL getMap(String[] layers, LocationArea area) {
+	public URL getMap(List<LayerInformation> layers, LocationArea area) {
 		try {
 			return new URL("http://kartat.lounaispaikka.fi/wms/maakuntakaava?version=1.1.1&service=WMS&request=GetMap&" + 
-					"layers=mk_aluevaraus&srs=EPSG:4326&bbox=22.1,60.4,22.3,60.5&width=700&height=500&format=image/png&styles=");
+					"layers=" + "mk_aluevaraus" + "&srs=EPSG:4326&bbox=" + "22.1,60.4,22.3,60.5" +
+							"&width=700&height=500&format=image/png&styles=");
 		} catch (MalformedURLException e) {
 			return null;
 		}
