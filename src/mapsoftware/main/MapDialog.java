@@ -179,11 +179,10 @@ public class MapDialog extends JFrame {
 	// Tarkastetaan mitkä karttakerrokset on valittu,
 	// tehdään uudesta karttakuvasta pyyntö palvelimelle ja päivitetään kuva
 	public void updateImage() throws Exception {
-		String s = formatCapabilities();
-		System.out.println(ConStra.getMap(s, this.Area.getArea()));
-		// TODO:
-		// getMap-KYSELYN URL-OSOITTEEN MUODOSTAMINEN JA KUVAN PÄIVITYS
-		// ERILLISESSÄ SÄIKEESSÄ
+		vittuMitaPaskaa vmp = new vittuMitaPaskaa();
+		vmp.run();
+		
+		
 		// imageLabel.setIcon(new ImageIcon(url));
 	}
 	
@@ -198,6 +197,20 @@ public class MapDialog extends JFrame {
 			s = s.substring(0, s.length() - 1);
 		
 		return s;
+	}
+
+//Toteutettu threadilla, koska teht�v�n anto.
+	private class vittuMitaPaskaa extends Thread {
+		
+		private void newMap() {
+			String s = formatCapabilities();
+			System.out.println(ConStra.getMap(s, Area.getArea()));
+			imageLabel.setIcon(new ImageIcon(ConStra.getMap(s, Area.getArea())));
+		}
+		
+		public void run() {
+			newMap();
+		}
 	}
 	
 
