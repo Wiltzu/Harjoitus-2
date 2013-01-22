@@ -2,28 +2,58 @@ package mapsoftware.wms;
 
 public class LocationArea {
 	
-	private final int minX, minY, maxX, maxY;
+	private Double[] coords = new Double[4];
+	private String locArea;
+	private int counter;
 	
-	public LocationArea(int minX, int minY, int maxX, int maxY) {
-		this.minX = minX;
-		this.minY = minY;
-		this.maxX = maxX;
-		this.maxY = maxY;
+	public LocationArea(Double minX, Double minY, Double maxX, Double maxY) {
+		this.coords[0] = minX;
+		this.coords[1] = minY;
+		this.coords[2] = maxX;
+		this.coords[3] = maxY;
+		this.locArea = "";
+		this.counter = 0;
+		formatArea();
 	}
 
-	public int getMinX() {
-		return minX;
+	public Double getMinX() {
+		return this.coords[0];
 	}
 
-	public int getMinY() {
-		return minY;
+	public Double getMinY() {
+		return this.coords[1];
 	}
 
-	public int getMaxX() {
-		return maxX;
+	public Double getMaxX() {
+		return this.coords[2];
 	}
 
-	public int getMaxY() {
-		return maxY;
+	public Double getMaxY() {
+		return this.coords[3];
+	}
+	
+	public String getArea(){
+		return this.locArea;
+	}
+	
+	public void formatArea() {
+		if(counter == 0) {
+			this.locArea = "";
+			this.locArea += Double.toString(this.coords[counter]) + ",";
+			counter++;
+			formatArea();
+		 }
+		if(0 < this.counter && this.counter <3) {
+			this.locArea += Double.toString(this.coords[counter]) + ",";
+			counter++;
+			formatArea();
+		}
+		if(counter == 3) {
+			this.locArea += Double.toString(this.coords[counter]);
+			counter = 0;
+		}
+
+	 
+		
 	}
 }

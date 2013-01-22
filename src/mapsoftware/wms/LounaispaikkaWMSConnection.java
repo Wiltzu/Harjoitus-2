@@ -52,19 +52,20 @@ public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 	}
 
 	@Override
-	public URL getMap(List<LayerInformation> layers, LocationArea area) {
+	public URL getMap(String layers, String area) {
 		try {
 			if(layers == null && area == null) {
 				return new URL(GET_MAP_STATIC_PART + 
 						"layers=" + "mk_aluevaraus" + "&" + "bbox=" + "22.1,60.4,22.3,60.5");
 			}
 			//dynamic URL generation here
-			return null;
+			return new URL(GET_MAP_STATIC_PART + "layers=" + layers + "&" + "bbox=" + area);
 			
 			
 		} catch (MalformedURLException e) {
 			return null;
 		}
 	}
+	
 
 }

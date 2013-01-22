@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import mapsoftware.wms.LayerInformation;
+import mapsoftware.wms.LocationArea;
 import mapsoftware.wms.LounaispaikkaCapParser;
 import mapsoftware.wms.LounaispaikkaWMSConnection;
 import mapsoftware.wms.WMSConnectionStrategy;
@@ -27,7 +28,10 @@ import mapsoftware.wms.WMSConnectionStrategy;
 public class MapDialog extends JFrame {
 
 	// Käyttöliittymän komponentit
+	private WMSConnectionStrategy ConStra;
+	private LocationArea Area;
 
+	private Component[] Components;
 	private JLabel imageLabel = new JLabel();
 	private JPanel leftPanel = new JPanel();
 
@@ -49,12 +53,15 @@ public class MapDialog extends JFrame {
 
 		// ALLA OLEVAN TESTIRIVIN VOI KORVATA JOLLAKIN MUULLA ERI ALOITUSNÄKYMÄN
 		// LATAAVALLA RIVILL�
-		WMSConnectionStrategy conStra = new LounaispaikkaWMSConnection(new LounaispaikkaCapParser());
-		List<LayerInformation> layers = conStra.getCapabilities();
-		imageLabel
-				.setIcon(new ImageIcon(
-						conStra.getMap(null, null)));
-		add(imageLabel, BorderLayout.EAST);
+		
+		// NS. Default position
+		Area = new LocationArea(22.1, 60.4, 22.3, 60.5);
+		ConStra = new LounaispaikkaWMSConnection(new LounaispaikkaCapParser());
+		List<LayerInformation> layers = ConStra.getCapabilities();
+//		imageLabel
+//				.setIcon(new ImageIcon(
+//						ConStra.getMap(null, null)));
+//		add(imageLabel, BorderLayout.EAST);
 
 		ButtonListener bl = new ButtonListener();
 		refreshB.addActionListener(bl);
@@ -70,7 +77,7 @@ public class MapDialog extends JFrame {
 		leftPanel.setMaximumSize(new Dimension(100, 600));
 
 		for(int i=0; i<layers.size(); i++) {
-			if(i==0) {
+			if(i==1) {
 				leftPanel.add(new LayerCheckBox(layers.get(i).getName(), layers.get(i).getTitle(), true));
 			}
 			else {
@@ -88,6 +95,13 @@ public class MapDialog extends JFrame {
 		leftPanel.add(downB);
 		leftPanel.add(zoomInB);
 		leftPanel.add(zoomOutB);
+		this.Components = leftPanel.getComponents();
+
+		imageLabel
+				.setIcon(new ImageIcon(
+						ConStra.getMap(formatCapabilities(), this.Area.getArea())));
+		System.out.println(ConStra.getMap(null, null));
+		add(imageLabel, BorderLayout.EAST);
 
 		add(leftPanel, BorderLayout.WEST);
 
@@ -105,8 +119,8 @@ public class MapDialog extends JFrame {
 	private class ButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == refreshB) {
-				// try { updateImage(); } catch(Exception ex) {
-				// ex.printStackTrace(); }
+				try { updateImage(); } catch(Exception ex) {
+				ex.printStackTrace(); }
 			}
 			if (e.getSource() == leftB) {
 				// TODO:
@@ -159,29 +173,31 @@ public class MapDialog extends JFrame {
 		public String getName() {
 			return name;
 		}
+		
 	}
 
 	// Tarkastetaan mitkä karttakerrokset on valittu,
 	// tehdään uudesta karttakuvasta pyyntö palvelimelle ja päivitetään kuva
 	public void updateImage() throws Exception {
+		String s = formatCapabilities();
+		System.out.println(ConStra.getMap(s, this.Area.getArea()));
+		// TODO:
+		// getMap-KYSELYN URL-OSOITTEEN MUODOSTAMINEN JA KUVAN PÄIVITYS
+		// ERILLISESSÄ SÄIKEESSÄ
+		// imageLabel.setIcon(new ImageIcon(url));
+	}
+	
+	public String formatCapabilities() {
 		String s = "";
-
-		// Tutkitaan, mitkä valintalaatikot on valittu, ja
-		// kerätään s:ään pilkulla erotettu lista valittujen kerrosten
-		// nimistä (käytetään haettaessa uutta kuvaa)
-		Component[] components = leftPanel.getComponents();
-		for (Component com : components) {
+		for (Component com : this.Components) {
 			if (com instanceof LayerCheckBox)
 				if (((LayerCheckBox) com).isSelected())
 					s = s + com.getName() + ",";
 		}
 		if (s.endsWith(","))
 			s = s.substring(0, s.length() - 1);
-
-		// TODO:
-		// getMap-KYSELYN URL-OSOITTEEN MUODOSTAMINEN JA KUVAN PÄIVITYS
-		// ERILLISESSÄ SÄIKEESSÄ
-		// imageLabel.setIcon(new ImageIcon(url));
+		
+		return s;
 	}
 	
 
