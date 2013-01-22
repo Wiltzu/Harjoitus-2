@@ -17,6 +17,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 import mapsoftware.wms.LayerInformation;
 import mapsoftware.wms.LocationArea;
@@ -50,17 +53,18 @@ public class MapDialog extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout());
 
-		// ALLA OLEVAN TESTIRIVIN VOI KORVATA JOLLAKIN MUULLA ERI ALOITUSNÄKYMÄN
+		// ALLA OLEVAN TESTIRIVIN VOI KORVATA JOLLAKIN MUULLA ERI
+		// ALOITUSNÄKYMÄN
 		// LATAAVALLA RIVILL�
-		
+
 		// NS. Default position
 		Area = new LocationArea(22.1, 60.4, 22.3, 60.5);
 		ConStra = new LounaispaikkaWMSConnection(new LounaispaikkaCapParser());
 		List<LayerInformation> layers = ConStra.getCapabilities();
-//		imageLabel
-//				.setIcon(new ImageIcon(
-//						ConStra.getMap(null, null)));
-//		add(imageLabel, BorderLayout.EAST);
+		// imageLabel
+		// .setIcon(new ImageIcon(
+		// ConStra.getMap(null, null)));
+		// add(imageLabel, BorderLayout.EAST);
 
 		ButtonListener bl = new ButtonListener();
 		refreshB.addActionListener(bl);
@@ -75,16 +79,16 @@ public class MapDialog extends JFrame {
 		leftPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		leftPanel.setMaximumSize(new Dimension(100, 600));
 
-		for(int i=0; i<layers.size(); i++) {
-			if(i==1) {
-				leftPanel.add(new LayerCheckBox(layers.get(i).getName(), layers.get(i).getTitle(), true));
+		for (int i = 0; i < layers.size(); i++) {
+			if (i == 1) {
+				leftPanel.add(new LayerCheckBox(layers.get(i).getName(), layers
+						.get(i).getTitle(), true));
+			} else {
+				leftPanel.add(new LayerCheckBox(layers.get(i).getName(), layers
+						.get(i).getTitle(), false));
 			}
-			else {
-				leftPanel.add(new LayerCheckBox(layers.get(i).getName(), layers.get(i).getTitle(), false));
-			}
-			
-		}
 
+		}
 
 		leftPanel.add(refreshB);
 		leftPanel.add(Box.createVerticalStrut(20));
@@ -96,9 +100,8 @@ public class MapDialog extends JFrame {
 		leftPanel.add(zoomOutB);
 		this.Components = leftPanel.getComponents();
 
-		imageLabel
-				.setIcon(new ImageIcon(
-						ConStra.getMap(formatCapabilities(), this.Area.getArea())));
+		imageLabel.setIcon(new ImageIcon(ConStra.getMap(formatCapabilities(),
+				this.Area.getArea())));
 		System.out.println(ConStra.getMap(null, null));
 		add(imageLabel, BorderLayout.EAST);
 
@@ -106,79 +109,100 @@ public class MapDialog extends JFrame {
 
 		pack();
 		setVisible(true);
-		System.out.println(imageLabel.getHeight() + " " + imageLabel.getWidth());
+		System.out
+				.println(imageLabel.getHeight() + " " + imageLabel.getWidth());
 	}
 
 	public static void main(String[] args) throws Exception {
 		new MapDialog();
 	}
-	
 
 	// Kontrollinappien kuuntelija
 	// KAIKKIEN NAPPIEN YHTEYDESSÄ VOINEE HYÖDYNTÄÄ updateImage()-METODIA
 	private class ButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == refreshB) {
-				try { updateImage(); } catch(Exception ex) {
-				ex.printStackTrace(); }
+				try {
+					updateImage();
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 			if (e.getSource() == leftB) {
 				// TODO:
 				// VASEMMALLE SIIRTYMINEN KARTALLA
-				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA PÄIVITÄ
+				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA
+				// PÄIVITÄ
 				// KUVA
 				Area.move("L");
-				try { updateImage(); } catch(Exception ex) {
+				try {
+					updateImage();
+				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
 			}
 			if (e.getSource() == rightB) {
 				// TODO:
 				// OIKEALLE SIIRTYMINEN KARTALLA
-				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA PÄIVITÄ
+				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA
+				// PÄIVITÄ
 				// KUVA
 				Area.move("R");
-				try { updateImage(); } catch(Exception ex) {
+				try {
+					updateImage();
+				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
 			}
 			if (e.getSource() == upB) {
 				// TODO:
 				// YLÖSPÄIN SIIRTYMINEN KARTALLA
-				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA PÄIVITÄ
+				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA
+				// PÄIVITÄ
 				// KUVA
 				Area.move("U");
-				try { updateImage(); } catch(Exception ex) {
+				try {
+					updateImage();
+				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
 			}
 			if (e.getSource() == downB) {
 				// TODO:
 				// ALASPÄIN SIIRTYMINEN KARTALLA
-				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA PÄIVITÄ
+				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA
+				// PÄIVITÄ
 				// KUVA
 				Area.move("D");
-				try { updateImage(); } catch(Exception ex) {
+				try {
+					updateImage();
+				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
 			}
 			if (e.getSource() == zoomInB) {
 				// TODO:
 				// ZOOM IN -TOIMINTO
-				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA PÄIVITÄ
+				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA
+				// PÄIVITÄ
 				// KUVA
 				Area.move("I");
-				try { updateImage(); } catch(Exception ex) {
+				try {
+					updateImage();
+				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
 			}
 			if (e.getSource() == zoomOutB) {
 				// TODO:
 				// ZOOM OUT -TOIMINTO
-				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA PÄIVITÄ
+				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA
+				// PÄIVITÄ
 				// KUVA
 				Area.move("O");
-				try { updateImage(); } catch(Exception ex) {
+				try {
+					updateImage();
+				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
 			}
@@ -187,29 +211,32 @@ public class MapDialog extends JFrame {
 
 	// Valintalaatikko, joka muistaa karttakerroksen nimen
 	private class LayerCheckBox extends JCheckBox {
-		private final LayerInformation layerInfo;
+		private final String name;
 
-		public LayerCheckBox(LayerInformation layerInfo, boolean selected) {
-			super(layerInfo.getTitle(), null, selected);
-			this.layerInfo = layerInfo;
+		public LayerCheckBox(String name, String title, boolean selected) {
+			super(title, null, selected);
+			this.name = name;
 		}
 
-		public LayerInformation getLayerInformation() {
-			return layerInfo;
+		public String getName() {
+			return name;
 		}
-		
+
 	}
 
 	// Tarkastetaan mitkä karttakerrokset on valittu,
-	// tehdään uudesta karttakuvasta pyyntö palvelimelle ja päivitetään kuva
+	// tehdään uudesta karttakuvasta pyyntö palvelimelle ja päivitetään
+	// kuva
 	public void updateImage() throws Exception {
-		vittuMitaPaskaa vmp = new vittuMitaPaskaa();
-		vmp.run();
-		
-		
+		new Thread() {
+			public void run() {
+				SwingUtilities.invokeLater(new MapUpdater());
+			}
+		}.start();
+
 		// imageLabel.setIcon(new ImageIcon(url));
 	}
-	
+
 	public String formatCapabilities() {
 		String s = "";
 		for (Component com : this.Components) {
@@ -219,23 +246,23 @@ public class MapDialog extends JFrame {
 		}
 		if (s.endsWith(","))
 			s = s.substring(0, s.length() - 1);
-		
+
 		return s;
 	}
 
-//Toteutettu threadilla, koska teht�v�n anto.
-	private class vittuMitaPaskaa extends Thread {
-		
-		private void newMap() {
+	// Toteutettu threadilla, koska teht�v�n anto.
+	private class MapUpdater implements Runnable {
+		public void run() {
+			updateMap();
+		}
+
+		private void updateMap() {
 			String s = formatCapabilities();
 			System.out.println(ConStra.getMap(s, Area.getArea()));
-			imageLabel.setIcon(new ImageIcon(ConStra.getMap(s, Area.getArea())));
+			imageLabel
+					.setIcon(new ImageIcon(ConStra.getMap(s, Area.getArea())));
 		}
-		
-		public void run() {
-			newMap();
-		}
+
 	}
-	
 
 } // MapDialog
