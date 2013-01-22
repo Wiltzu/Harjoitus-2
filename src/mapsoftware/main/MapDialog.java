@@ -6,7 +6,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -188,15 +187,15 @@ public class MapDialog extends JFrame {
 
 	// Valintalaatikko, joka muistaa karttakerroksen nimen
 	private class LayerCheckBox extends JCheckBox {
-		private String name = "";
+		private final LayerInformation layerInfo;
 
-		public LayerCheckBox(String name, String title, boolean selected) {
-			super(title, null, selected);
-			this.name = name;
+		public LayerCheckBox(LayerInformation layerInfo, boolean selected) {
+			super(layerInfo.getTitle(), null, selected);
+			this.layerInfo = layerInfo;
 		}
 
-		public String getName() {
-			return name;
+		public LayerInformation getLayerInformation() {
+			return layerInfo;
 		}
 		
 	}
