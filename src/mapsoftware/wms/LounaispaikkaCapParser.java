@@ -23,7 +23,8 @@ public class LounaispaikkaCapParser implements WMSCapabilitiesParser {
 		System.out.println("ennen parsea");
 
 		tidy.setXmlTags(true); // Defines that doc contains XML
-		doc = tidy.parseDOM(xmlDocument, System.out);
+		doc = tidy.parseDOM(xmlDocument, null);
+		
 
 		System.out.println("ennen capabilityjen hakua");
 		NodeList nl = doc.getElementsByTagName("Layer");
@@ -33,6 +34,9 @@ public class LounaispaikkaCapParser implements WMSCapabilitiesParser {
 			NodeList layerNodes = el.getChildNodes();
 			Node name = layerNodes.item(0);
 			Node title = layerNodes.item(1);
+			if(name == null || title == null) {
+				break; //avoids nullpointer (problem with xml data)
+			}
 			LayerInformation info = new LayerInformation(name.getFirstChild().getNodeValue(),
 					title.getFirstChild().getNodeValue());
 			System.out.println(info);

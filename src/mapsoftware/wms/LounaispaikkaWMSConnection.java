@@ -48,16 +48,21 @@ public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 		pw.println("");
 		pw.flush();
 		
-		return parser.parseDocument(is);
+		List<LayerInformation> result = parser.parseDocument(is);
+		pw.close();
+		try {
+			is.close(); 
+			s.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	@Override
 	public URL getMap(String layers, String area) {
 		try {
-			if(layers == null && area == null) {
-				return new URL(GET_MAP_STATIC_PART + 
-						"layers=" + "mk_aluevaraus" + "&" + "bbox=" + "22.1,60.4,22.3,60.5");
-			}
 			//dynamic URL generation here
 			return new URL(GET_MAP_STATIC_PART + "layers=" + layers + "&" + "bbox=" + area);
 			
