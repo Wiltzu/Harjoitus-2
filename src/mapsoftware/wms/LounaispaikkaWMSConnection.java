@@ -14,6 +14,7 @@ import java.util.List;
 
 public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 	
+	private static final String GET_MAP_STATIC_PART = "http://kartat.lounaispaikka.fi/wms/maakuntakaava?version=1.1.1&service=WMS&request=GetMap&srs=EPSG:4326&&width=700&height=500&format=image/png&styles=&";
 	private static final String GET_CAP_REQ_ADDRESS = "/wms/maakuntakaava?version=1.1.1&service=WMS&request=GetCapabilities";
 	private static final int HTTP_PORT = 80;
 	private static final String HOST = "kartat.lounaispaikka.fi";
@@ -53,9 +54,14 @@ public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 	@Override
 	public URL getMap(List<LayerInformation> layers, LocationArea area) {
 		try {
-			return new URL("http://kartat.lounaispaikka.fi/wms/maakuntakaava?version=1.1.1&service=WMS&request=GetMap&" + 
-					"layers=" + "mk_aluevaraus" + "&srs=EPSG:4326&bbox=" + "22.1,60.4,22.3,60.5" +
-							"&width=700&height=500&format=image/png&styles=");
+			if(layers == null && area == null) {
+				return new URL(GET_MAP_STATIC_PART + 
+						"layers=" + "mk_aluevaraus" + "&" + "bbox=" + "22.1,60.4,22.3,60.5");
+			}
+			//dynamic URL generation here
+			return null;
+			
+			
 		} catch (MalformedURLException e) {
 			return null;
 		}
