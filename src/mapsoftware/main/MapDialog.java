@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -18,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import mapsoftware.wms.LayerInformation;
 import mapsoftware.wms.LounaispaikkaCapParser;
 import mapsoftware.wms.LounaispaikkaWMSConnection;
 import mapsoftware.wms.WMSConnectionStrategy;
@@ -29,7 +31,7 @@ public class MapDialog extends JFrame {
 	private JLabel imageLabel = new JLabel();
 	private JPanel leftPanel = new JPanel();
 
-	private JButton refreshB = new JButton("Päivitä");
+	private JButton refreshB = new JButton("Refresh");
 	private JButton leftB = new JButton("<");
 	private JButton rightB = new JButton(">");
 	private JButton upB = new JButton("^");
@@ -48,7 +50,7 @@ public class MapDialog extends JFrame {
 		// ALLA OLEVAN TESTIRIVIN VOI KORVATA JOLLAKIN MUULLA ERI ALOITUSNÄKYMÄN
 		// LATAAVALLA RIVILL�
 		WMSConnectionStrategy conStra = new LounaispaikkaWMSConnection(new LounaispaikkaCapParser());
-		conStra.getCapabilities();
+		List<LayerInformation> layers = conStra.getCapabilities();
 		imageLabel
 				.setIcon(new ImageIcon(
 						conStra.getMap(null, null)));
@@ -67,14 +69,16 @@ public class MapDialog extends JFrame {
 		leftPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		leftPanel.setMaximumSize(new Dimension(100, 600));
 
-		// TODO:
-		// ALLA OLEVIEN KOLMEN TESTIRIVIN TILALLE SILMUKKA JOKA LISÄÄ
-		// KÄYTTÖLIITTYMÄÄN
-		// KAIKKIEN XML-DATASTA HAETTUJEN KERROSTEN VALINTALAATIKOT MALLIN
-		// MUKAAN
-		leftPanel.add(new LayerCheckBox("mk_aluevaraus", "Aluevaraukset", true));
-		leftPanel.add(new LayerCheckBox("mk_osaalueet", "Osa-alueet", false));
-		leftPanel.add(new LayerCheckBox("mk_tiet", "Liikenne", false));
+		for(int i=0; i<layers.size(); i++) {
+			if(i==0) {
+				leftPanel.add(new LayerCheckBox(layers.get(i).getName(), layers.get(i).getTitle(), true));
+			}
+			else {
+				leftPanel.add(new LayerCheckBox(layers.get(i).getName(), layers.get(i).getTitle(), false));
+			}
+			
+		}
+
 
 		leftPanel.add(refreshB);
 		leftPanel.add(Box.createVerticalStrut(20));
@@ -94,6 +98,7 @@ public class MapDialog extends JFrame {
 	public static void main(String[] args) throws Exception {
 		new MapDialog();
 	}
+	
 
 	// Kontrollinappien kuuntelija
 	// KAIKKIEN NAPPIEN YHTEYDESSÄ VOINEE HYÖDYNTÄÄ updateImage()-METODIA
@@ -178,5 +183,6 @@ public class MapDialog extends JFrame {
 		// ERILLISESSÄ SÄIKEESSÄ
 		// imageLabel.setIcon(new ImageIcon(url));
 	}
+	
 
 } // MapDialog

@@ -18,6 +18,7 @@ public class LounaispaikkaCapParser implements WMSCapabilitiesParser {
 		List<LayerInformation> result = new ArrayList<LayerInformation>();
 		Document doc = null;
 		Tidy tidy = new Tidy();
+		
 
 		System.out.println("ennen parsea");
 
@@ -39,8 +40,16 @@ public class LounaispaikkaCapParser implements WMSCapabilitiesParser {
 
 		}
 
-		System.out.println("meni loppuun asti (b¤_¤)b");
+//		parseSuccesConfirmation(result);
+		System.out.println("\n"+"meni loppuun asti (b¤_¤)b");
 		return result;
 	}
-
+	
+	private void parseSuccesConfirmation(List<LayerInformation> list) {
+		for(int i=0; i<list.size(); i++){
+			LayerInformation temp = list.get(i);
+			System.out.println(temp.getName()+" "+temp.getTitle());
+		}
+	}
+	
 }
