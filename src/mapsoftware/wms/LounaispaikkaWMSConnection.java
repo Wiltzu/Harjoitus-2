@@ -14,7 +14,7 @@ import java.util.List;
 
 public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 	
-	private static final String GET_MAP_STATIC_PART = "http://www2.demis.nl/WMS/wms.asp?WMS=WorldMap&WMTVER=1.0.0&request=getmap&srs=EPSG:4326&&width=700&height=500&format=image/png&styles=&";
+	private static final String GET_MAP_STATIC_PART = "http://kartat.lounaispaikka.fi/wms/maakuntakaava?version=1.1.1&service=WMS&request=getmap&srs=EPSG:4326&&width=700&height=500&format=image/png&styles=&";
 	private static final String GET_CAP_REQ_ADDRESS = "/wms/maakuntakaava?version=1.1.1&service=WMS&request=GetCapabilities";
 	private static final int HTTP_PORT = 80;
 	private static final String HOST = "kartat.lounaispaikka.fi";

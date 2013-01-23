@@ -22,8 +22,8 @@ import javax.swing.SwingUtilities;
 import mapsoftware.wms.LayerInformation;
 import mapsoftware.wms.LocationArea;
 import mapsoftware.wms.LounaispaikkaCapParser;
+import mapsoftware.wms.LounaispaikkaWMSConnection;
 import mapsoftware.wms.WMSConnectionStrategy;
-import mapsoftware.wms.WorldMapWMSConnection;
 
 public class MapDialog extends JFrame {
 
@@ -57,7 +57,7 @@ public class MapDialog extends JFrame {
 
 		// NS. Default position
 		Area = new LocationArea(22.1, 60.4, 22.3, 60.5);
-		ConStra = new WorldMapWMSConnection(new LounaispaikkaCapParser());
+		ConStra = new LounaispaikkaWMSConnection(new LounaispaikkaCapParser());
 		List<LayerInformation> layers = ConStra.getCapabilities();
 		// imageLabel
 		// .setIcon(new ImageIcon(
