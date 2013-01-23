@@ -18,13 +18,11 @@ public class LounaispaikkaCapParser implements WMSCapabilitiesParser {
 		List<LayerInformation> result = new ArrayList<LayerInformation>();
 		Document doc = null;
 		Tidy tidy = new Tidy();
-		
 
 		System.out.println("ennen parsea");
 
 		tidy.setXmlTags(true); // Defines that doc contains XML
-		doc = tidy.parseDOM(xmlDocument, null);
-		
+		doc = tidy.parseDOM(xmlDocument, System.out);
 
 		System.out.println("ennen capabilityjen hakua");
 		NodeList nl = doc.getElementsByTagName("Layer");
@@ -34,26 +32,29 @@ public class LounaispaikkaCapParser implements WMSCapabilitiesParser {
 			NodeList layerNodes = el.getChildNodes();
 			Node name = layerNodes.item(0);
 			Node title = layerNodes.item(1);
-			if(name == null || title == null) {
-				break; //avoids nullpointer (problem with xml data)
+			if (name == null || title == null || name.getFirstChild() == null
+					|| title.getFirstChild() == null) {
+			 // avoids nullpointer (problem with xml data)
+			} else {
+				LayerInformation info = new LayerInformation(name
+						.getFirstChild().getNodeValue(), title.getFirstChild()
+						.getNodeValue());
+				System.out.println(info);
+				result.add(info);
 			}
-			LayerInformation info = new LayerInformation(name.getFirstChild().getNodeValue(),
-					title.getFirstChild().getNodeValue());
-			System.out.println(info);
-			result.add(info);
 
 		}
 
-//		parseSuccesConfirmation(result);
-		System.out.println("\n"+"meni loppuun asti (b¤_¤)b");
+		// parseSuccesConfirmation(result);
+		System.out.println("\n" + "meni loppuun asti (b¤_¤)b");
 		return result;
 	}
-	
+
 	private void parseSuccesConfirmation(List<LayerInformation> list) {
-		for(int i=0; i<list.size(); i++){
+		for (int i = 0; i < list.size(); i++) {
 			LayerInformation temp = list.get(i);
-			System.out.println(temp.getName()+" "+temp.getTitle());
+			System.out.println(temp.getName() + " " + temp.getTitle());
 		}
 	}
-	
+
 }
