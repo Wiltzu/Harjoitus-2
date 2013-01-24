@@ -10,21 +10,30 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.tidy.Tidy;
 
+/**
+ * @author Aleksi Haapsaari
+ * @author Ville Ahti
+ * @author Johannes Miettinen
+ *
+ *<p>Parses layer information from xml data</p>
+ */
 public class LounaispaikkaCapParser implements WMSCapabilitiesParser {
 
+	/* (non-Javadoc)
+	 * @see mapsoftware.wms.WMSCapabilitiesParser#parseDocument(java.io.InputStream)
+	 */
 	@Override
 	public List<LayerInformation> parseDocument(InputStream xmlDocument) {
-		System.out.println("paska alkaa");
 		List<LayerInformation> result = new ArrayList<LayerInformation>();
 		Document doc = null;
 		Tidy tidy = new Tidy();
 
-		System.out.println("ennen parsea");
+		//System.out.println("ennen parsea");
 
 		tidy.setXmlTags(true); // Defines that doc contains XML
 		doc = tidy.parseDOM(xmlDocument, System.out);
 
-		System.out.println("ennen capabilityjen hakua");
+		//System.out.println("ennen capabilityjen hakua");
 		NodeList nl = doc.getElementsByTagName("Layer");
 		for (int i = 0; i < nl.getLength(); i++) {
 			Node node = nl.item(i);
@@ -39,17 +48,23 @@ public class LounaispaikkaCapParser implements WMSCapabilitiesParser {
 				LayerInformation info = new LayerInformation(name
 						.getFirstChild().getNodeValue(), title.getFirstChild()
 						.getNodeValue());
-				System.out.println(info);
+				//System.out.println(info);
 				result.add(info);
 			}
 
 		}
 
 		// parseSuccesConfirmation(result);
-		System.out.println("\n" + "meni loppuun asti (b¤_¤)b");
+		//System.out.println("\n" + "meni loppuun asti (b¤_¤)b");
 		return result;
 	}
 
+	
+	/**
+	 * @param list List containing LayerInformation.
+	 * 
+	 * <p> Prints out names and titles of layers from the given list. </p>
+	 */
 	private void parseSuccesConfirmation(List<LayerInformation> list) {
 		for (int i = 0; i < list.size(); i++) {
 			LayerInformation temp = list.get(i);

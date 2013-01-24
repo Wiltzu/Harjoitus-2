@@ -112,8 +112,6 @@ public class MapDialog extends JFrame {
 
 		pack();
 		setVisible(true);
-		System.out
-				.println(imageLabel.getHeight() + " " + imageLabel.getWidth());
 	}
 
 	public static void main(String[] args) throws Exception {

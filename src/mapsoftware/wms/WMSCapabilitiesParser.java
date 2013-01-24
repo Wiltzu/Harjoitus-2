@@ -5,7 +5,9 @@ import java.util.List;
 
 public interface WMSCapabilitiesParser {
 	/**
-	 *  <p>parses XML document and gives layers to client</p>
+	 * @param xmlDocument InputStream containing xml
+	 * @return List containing LayerInformation.
+	 *  <p>Returns a List containing LayerInformation fetched from the InputStream.</p>
 	 */
 	List<LayerInformation> parseDocument(InputStream xmlDocument);
 }
