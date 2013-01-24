@@ -1,5 +1,13 @@
 package mapsoftware.wms;
 
+/**
+ * @author Johannes Miettinen
+ * @author Aleksi Haapsaari
+ * @author Ville Ahti
+ * 
+ * <p>Container for the location information</p>
+ *
+ */
 public class LocationArea {
 	
 	private Double[] Coords = new Double[4];
@@ -7,6 +15,14 @@ public class LocationArea {
 	private int Counter;
 	private Double Angle;
 	
+	/**
+	 * @param minX Double representing minimum X coordinate
+	 * @param minY Double representing minimum Y coordinate
+	 * @param maxX Double representing maximum X coordinate
+	 * @param maxY Double representing maximum Y coordinate
+	 * 
+	 * <p>Constructor for the class</p>
+	 */
 	public LocationArea(Double minX, Double minY, Double maxX, Double maxY) {
 		this.Coords[0] = minX;
 		this.Coords[1] = minY;
