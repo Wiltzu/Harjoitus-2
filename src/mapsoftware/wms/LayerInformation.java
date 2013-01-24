@@ -22,6 +22,8 @@ public class LayerInformation {
 	}
 	
 	/**
+	 * <p>Getter for name</p>
+	 *
 	 * @return name (parameter) of layer
 	 */
 	public String getName() {
@@ -29,6 +31,8 @@ public class LayerInformation {
 	}
 
 	/**
+	 * <p>Getter for title</p>
+	 * 
 	 * @return title of layer
 	 */
 	public String getTitle() {
