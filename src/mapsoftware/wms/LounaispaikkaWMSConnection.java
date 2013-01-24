@@ -10,6 +10,14 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.List;
 
+/**
+ * <p>Class for making WMS protocol requests</p>
+ * 
+ * @author Ville Ahti
+ * @author Aleksi Haapsaari
+ * @author Johannes Miettinen
+ *
+ */
 public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 
 	private static final String GET_MAP_STATIC_PART = "http://kartat.lounaispaikka.fi/wms/maakuntakaava?version=1.1.1&service=WMS&request=getmap&srs=EPSG:4326&&width=700&height=500&format=image/png&styles=&";
@@ -19,10 +27,16 @@ public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 	private Socket s;
 	private final WMSCapabilitiesParser parser;
 
+	/**
+	 * @param parser for getCapabilities xml data
+	 */
 	public LounaispaikkaWMSConnection(WMSCapabilitiesParser parser) {
 		this.parser = parser;
 	}
 
+	/* (non-Javadoc)
+	 * @see mapsoftware.wms.WMSConnectionStrategy#getCapabilities()
+	 */
 	@Override
 	public List<LayerInformation> getCapabilities() {
 		PrintWriter pw = null;
@@ -56,6 +70,9 @@ public class LounaispaikkaWMSConnection implements WMSConnectionStrategy {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see mapsoftware.wms.WMSConnectionStrategy#getMap(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public URL getMap(String layers, String area) {
 		try {

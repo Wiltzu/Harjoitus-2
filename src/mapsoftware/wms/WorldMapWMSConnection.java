@@ -12,10 +12,16 @@ public class WorldMapWMSConnection implements WMSConnectionStrategy {
 	private static final String GET_CAP_ADDRESS = "http://www2.demis.nl/WMS/wms.asp?WMS=WorldMap&WMTVER=1.0.0&request=capabilities";
 	WMSCapabilitiesParser parser;
 
+	/**
+	 * @param parser for getCapabilities xml data 
+	 */
 	public WorldMapWMSConnection(WMSCapabilitiesParser parser) {
 		this.parser = parser;
 	}
 
+	/* (non-Javadoc)
+	 * @see mapsoftware.wms.WMSConnectionStrategy#getCapabilities()
+	 */
 	@Override
 	public List<LayerInformation> getCapabilities() {
 		URL url = null;
@@ -34,6 +40,9 @@ public class WorldMapWMSConnection implements WMSConnectionStrategy {
 		return parser.parseDocument(is);
 	}
 
+	/* (non-Javadoc)
+	 * @see mapsoftware.wms.WMSConnectionStrategy#getMap(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public URL getMap(String layers, String area) {
 		try {
