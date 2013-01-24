@@ -11,11 +11,12 @@ import org.w3c.dom.NodeList;
 import org.w3c.tidy.Tidy;
 
 /**
+ * <p>Parses layer information from xml data</p>
+ * 
  * @author Aleksi Haapsaari
  * @author Ville Ahti
  * @author Johannes Miettinen
  *
- *<p>Parses layer information from xml data</p>
  */
 public class LounaispaikkaCapParser implements WMSCapabilitiesParser {
 

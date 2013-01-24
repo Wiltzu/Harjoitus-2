@@ -1,12 +1,12 @@
 package mapsoftware.wms;
 
 /**
+ * <p>Container for the location information</p>
+ * 
  * @author Johannes Miettinen
  * @author Aleksi Haapsaari
  * @author Ville Ahti
  * 
- * <p>Container for the location information</p>
- *
  */
 public class LocationArea {
 	
@@ -79,7 +79,7 @@ public class LocationArea {
 	
 	/**
 	 * <p>Changes the coordinates according to which parameter is given. </p>
-	 * @param direction String defining how the coordinates should be changed.
+	 * @param direction String defining in what direction the coordinates should be changed.
 	 */
 	public void move(String direction) {
 		if(direction.equals("L")) {
