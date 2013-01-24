@@ -27,7 +27,6 @@ import mapsoftware.wms.WMSConnectionStrategy;
 
 public class MapDialog extends JFrame {
 
-	// Käyttöliittymän komponentit
 	private WMSConnectionStrategy ConStra;
 	private LocationArea Area;
 
@@ -46,7 +45,13 @@ public class MapDialog extends JFrame {
 	public MapDialog() throws Exception {
 		init();
 	}
-
+	
+	
+	/**
+	 * <p>Inits UI</p>
+	 * 
+	 * @throws Exception
+	 */
 	private void init() throws Exception {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout());
@@ -116,7 +121,7 @@ public class MapDialog extends JFrame {
 	}
 
 	// Kontrollinappien kuuntelija
-	// KAIKKIEN NAPPIEN YHTEYDESSÄ VOINEE HYÖDYNTÄÄ updateImage()-METODIA
+	// KAIKKIEN NAPPIEN YHTEYDESS� VOINEE HY�DYNT�� updateImage()-METODIA
 	private class ButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == refreshB) {
@@ -127,11 +132,7 @@ public class MapDialog extends JFrame {
 				}
 			}
 			if (e.getSource() == leftB) {
-				// TODO:
 				// VASEMMALLE SIIRTYMINEN KARTALLA
-				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA
-				// PÄIVITÄ
-				// KUVA
 				Area.move("L");
 				try {
 					updateImage();
@@ -140,11 +141,7 @@ public class MapDialog extends JFrame {
 				}
 			}
 			if (e.getSource() == rightB) {
-				// TODO:
 				// OIKEALLE SIIRTYMINEN KARTALLA
-				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA
-				// PÄIVITÄ
-				// KUVA
 				Area.move("R");
 				try {
 					updateImage();
@@ -153,11 +150,7 @@ public class MapDialog extends JFrame {
 				}
 			}
 			if (e.getSource() == upB) {
-				// TODO:
 				// YLÖSPÄIN SIIRTYMINEN KARTALLA
-				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA
-				// PÄIVITÄ
-				// KUVA
 				Area.move("U");
 				try {
 					updateImage();
@@ -166,11 +159,7 @@ public class MapDialog extends JFrame {
 				}
 			}
 			if (e.getSource() == downB) {
-				// TODO:
 				// ALASPÄIN SIIRTYMINEN KARTALLA
-				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA
-				// PÄIVITÄ
-				// KUVA
 				Area.move("D");
 				try {
 					updateImage();
@@ -179,11 +168,7 @@ public class MapDialog extends JFrame {
 				}
 			}
 			if (e.getSource() == zoomInB) {
-				// TODO:
 				// ZOOM IN -TOIMINTO
-				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA
-				// PÄIVITÄ
-				// KUVA
 				Area.move("I");
 				try {
 					updateImage();
@@ -192,11 +177,7 @@ public class MapDialog extends JFrame {
 				}
 			}
 			if (e.getSource() == zoomOutB) {
-				// TODO:
 				// ZOOM OUT -TOIMINTO
-				// MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA
-				// PÄIVITÄ
-				// KUVA
 				Area.move("O");
 				try {
 					updateImage();
@@ -222,9 +203,11 @@ public class MapDialog extends JFrame {
 
 	}
 
-	// Tarkastetaan mitkä karttakerrokset on valittu,
-	// tehdään uudesta karttakuvasta pyyntö palvelimelle ja päivitetään
-	// kuva
+
+	/**
+	 * <p>Updates map image</p>
+	 * @throws Exception
+	 */
 	public void updateImage() throws Exception {
 		new Thread() {
 			public void run() {
@@ -235,6 +218,9 @@ public class MapDialog extends JFrame {
 		// imageLabel.setIcon(new ImageIcon(url));
 	}
 
+	/**
+	 * @return request parameter from chosen LayerCheckbox components
+	 */
 	public String formatCapabilities() {
 		String s = "";
 		for (Component com : this.Components) {
@@ -248,12 +234,25 @@ public class MapDialog extends JFrame {
 		return s;
 	}
 
-	// Toteutettu threadilla, koska teht�v�n anto.
+	
+	/**
+	 * <p>Runnable class which updates map</p>
+	 * 
+	 * @author Aleksi Haapsaari
+	 * @author Ville Ahti
+	 * @author Johannes Miettinen
+	 */
 	private class MapUpdater implements Runnable {
+		/* (non-Javadoc)
+		 * @see java.lang.Runnable#run()
+		 */
 		public void run() {
 			updateMap();
 		}
-
+		
+		/**
+		 * <p>updates map UIs image</p>
+		 */
 		private void updateMap() {
 			String s = formatCapabilities();
 			System.out.println(ConStra.getMap(s, Area.getArea()));
