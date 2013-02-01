@@ -21,8 +21,6 @@ import javax.swing.SwingUtilities;
 
 import mapsoftware.wms.LayerInformation;
 import mapsoftware.wms.LocationInformation;
-import mapsoftware.wms.GenericWMSCapabilitiesParser;
-import mapsoftware.wms.LounaispaikkaWMSConnection;
 import mapsoftware.wms.WMServiceFactory;
 import mapsoftware.wms.WMServiceStrategy;
 
@@ -35,72 +33,60 @@ public class MapUI extends JFrame {
 	private JLabel imageLabel = new JLabel();
 	private JPanel leftPanel = new JPanel();
 
-	private JButton refreshB = new JButton("Refresh");
-	private JButton leftB = new JButton("<");
-	private JButton rightB = new JButton(">");
-	private JButton upB = new JButton("^");
-	private JButton downB = new JButton("v");
-	private JButton zoomInB = new JButton("+");
-	private JButton zoomOutB = new JButton("-");
+	private JButton btnRefresh = new JButton("Refresh");
+	private JButton btnLeft = new JButton("<");
+	private JButton btnRight = new JButton(">");
+	private JButton btnUp = new JButton("^");
+	private JButton btnDown = new JButton("v");
+	private JButton btnZoomIn = new JButton("+");
+	private JButton btnZoomOut = new JButton("-");
+
+	public static void main(String[] args) {
+		new MapUI(WMServiceFactory.getLounaispaikkaWMService());
+	}
 
 	public MapUI(WMServiceStrategy wmServiceStrategy) {
 		this.wmServiceStrategy = wmServiceStrategy;
 		init();
 	}
-	
-	
+
 	/**
-	 * <p>Inits UI</p>
+	 * <p>
+	 * Inits UI
+	 * </p>
 	 * 
 	 */
 	private void init() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout());
 
-		// ALLA OLEVAN TESTIRIVIN VOI KORVATA JOLLAKIN MUULLA ERI
-		// ALOITUSNÃ„KYMÃ„N
-		// LATAAVALLA RIVILLÄ
-
-		// NS. Default position
 		Area = new LocationInformation(22.1, 60.4, 22.3, 60.5);
 		List<LayerInformation> layers = wmServiceStrategy.getCapabilities();
-		// imageLabel
-		// .setIcon(new ImageIcon(
-		// ConStra.getMap(null, null)));
-		// add(imageLabel, BorderLayout.EAST);
 
-		ButtonListener bl = new ButtonListener();
-		refreshB.addActionListener(bl);
-		leftB.addActionListener(bl);
-		rightB.addActionListener(bl);
-		upB.addActionListener(bl);
-		downB.addActionListener(bl);
-		zoomInB.addActionListener(bl);
-		zoomOutB.addActionListener(bl);
+		attachButtonListeners();
 
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 		leftPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		leftPanel.setMaximumSize(new Dimension(100, 600));
 
-		for (LayerInformation layerInfo: layers) {
-				leftPanel.add(new LayerCheckBox(layerInfo, true));
+		for (LayerInformation layerInfo : layers) {
+			leftPanel.add(new LayerCheckBox(layerInfo, true));
 		}
 
-		leftPanel.add(refreshB);
+		leftPanel.add(btnRefresh);
 		leftPanel.add(Box.createVerticalStrut(20));
-		leftPanel.add(leftB);
-		leftPanel.add(rightB);
-		leftPanel.add(upB);
-		leftPanel.add(downB);
-		leftPanel.add(zoomInB);
-		leftPanel.add(zoomOutB);
+		leftPanel.add(btnLeft);
+		leftPanel.add(btnRight);
+		leftPanel.add(btnUp);
+		leftPanel.add(btnDown);
+		leftPanel.add(btnZoomIn);
+		leftPanel.add(btnZoomOut);
 		this.Components = leftPanel.getComponents();
 
-		imageLabel.setIcon(new ImageIcon(wmServiceStrategy.getMap(formatCapabilities(),
-				this.Area.getArea())));
-		System.out.println(wmServiceStrategy.getMap(null, null));
-		add(imageLabel, BorderLayout.EAST);
+		imageLabel.setIcon(new ImageIcon(wmServiceStrategy.getMap(
+				formatCapabilities(), this.Area.getArea())));
 
+		add(imageLabel, BorderLayout.EAST);
 		add(leftPanel, BorderLayout.WEST);
 
 		pack();
@@ -108,23 +94,33 @@ public class MapUI extends JFrame {
 		setResizable(false);
 	}
 
-	public static void main(String[] args) throws Exception {
-		new MapUI(WMServiceFactory.getLounaispaikkaWMService());
+	private void attachButtonListeners() {
+		ButtonListener bl = new ButtonListener();
+		btnRefresh.addActionListener(bl);
+		btnLeft.addActionListener(bl);
+		btnRight.addActionListener(bl);
+		btnUp.addActionListener(bl);
+		btnDown.addActionListener(bl);
+		btnZoomIn.addActionListener(bl);
+		btnZoomOut.addActionListener(bl);
 	}
 
-	// Kontrollinappien kuuntelija
-	// KAIKKIEN NAPPIEN YHTEYDESSÄ VOINEE HYÖDYNTÄÄ updateImage()-METODIA
+	/**
+	 * <p>
+	 * ButtonListener for all UI components
+	 * </p>
+	 * 
+	 */
 	private class ButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == refreshB) {
+			if (e.getSource() == btnRefresh) {
 				try {
 					updateImage();
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
 			}
-			if (e.getSource() == leftB) {
-				// VASEMMALLE SIIRTYMINEN KARTALLA
+			if (e.getSource() == btnLeft) {
 				Area.move("L");
 				try {
 					updateImage();
@@ -132,8 +128,7 @@ public class MapUI extends JFrame {
 					ex.printStackTrace();
 				}
 			}
-			if (e.getSource() == rightB) {
-				// OIKEALLE SIIRTYMINEN KARTALLA
+			if (e.getSource() == btnRight) {
 				Area.move("R");
 				try {
 					updateImage();
@@ -141,8 +136,7 @@ public class MapUI extends JFrame {
 					ex.printStackTrace();
 				}
 			}
-			if (e.getSource() == upB) {
-				// YLÃ–SPÃ„IN SIIRTYMINEN KARTALLA
+			if (e.getSource() == btnUp) {
 				Area.move("U");
 				try {
 					updateImage();
@@ -150,37 +144,28 @@ public class MapUI extends JFrame {
 					ex.printStackTrace();
 				}
 			}
-			if (e.getSource() == downB) {
-				// ALASPÃ„IN SIIRTYMINEN KARTALLA
+			if (e.getSource() == btnDown) {
 				Area.move("D");
-				try {
-					updateImage();
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
+				updateImage();
 			}
-			if (e.getSource() == zoomInB) {
-				// ZOOM IN -TOIMINTO
+			if (e.getSource() == btnZoomIn) {
 				Area.move("I");
-				try {
-					updateImage();
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
+				updateImage();
 			}
-			if (e.getSource() == zoomOutB) {
-				// ZOOM OUT -TOIMINTO
+			if (e.getSource() == btnZoomOut) {
 				Area.move("O");
-				try {
-					updateImage();
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
+				updateImage();
 			}
 		}
 	}
 
-	// Valintalaatikko, joka muistaa karttakerroksen nimen
+	
+	/**
+	 * <p>CheckBox that keeps information about WMS layers</p>
+	 * 
+	 * @author Ville Ahti
+	 *
+	 */
 	private class LayerCheckBox extends JCheckBox {
 		private final LayerInformation layerInformation;
 
@@ -195,11 +180,12 @@ public class MapUI extends JFrame {
 
 	}
 
-
 	/**
-	 * <p>Updates map image</p>
+	 * <p>
+	 * Updates map image
+	 * </p>
 	 */
-	public void updateImage() {
+	private void updateImage() {
 		new Thread() {
 			public void run() {
 				SwingUtilities.invokeLater(new MapUpdater());
@@ -210,12 +196,14 @@ public class MapUI extends JFrame {
 	/**
 	 * @return request parameter from chosen LayerCheckbox components
 	 */
-	public String formatCapabilities() {
+	private String formatCapabilities() {
 		String s = "";
 		for (Component com : this.Components) {
 			if (com instanceof LayerCheckBox)
 				if (((LayerCheckBox) com).isSelected())
-					s = s + ((LayerCheckBox) com).getLayerInformation().getName() + ",";
+					s = s
+							+ ((LayerCheckBox) com).getLayerInformation()
+									.getName() + ",";
 		}
 		if (s.endsWith(","))
 			s = s.substring(0, s.length() - 1);
@@ -223,32 +211,35 @@ public class MapUI extends JFrame {
 		return s;
 	}
 
-	
 	/**
-	 * <p>Runnable class which updates map</p>
+	 * <p>
+	 * Runnable class which updates map
+	 * </p>
 	 * 
-	 * @author Aleksi Haapsaari
 	 * @author Ville Ahti
-	 * @author Johannes Miettinen
 	 */
 	private class MapUpdater implements Runnable {
-		/* (non-Javadoc)
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see java.lang.Runnable#run()
 		 */
 		public void run() {
 			updateMap();
 		}
-		
+
 		/**
-		 * <p>updates map UIs image</p>
+		 * <p>
+		 * updates map UIs image
+		 * </p>
 		 */
 		private void updateMap() {
 			String s = formatCapabilities();
 			System.out.println(wmServiceStrategy.getMap(s, Area.getArea()));
-			imageLabel
-					.setIcon(new ImageIcon(wmServiceStrategy.getMap(s, Area.getArea())));
+			imageLabel.setIcon(new ImageIcon(wmServiceStrategy.getMap(s,
+					Area.getArea())));
 		}
 
 	}
 
-} // MapDialog
+}

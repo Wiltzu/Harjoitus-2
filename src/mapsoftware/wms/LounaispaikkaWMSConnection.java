@@ -18,7 +18,7 @@ import java.util.List;
  * @author Johannes Miettinen
  *
  */
-public class LounaispaikkaWMSConnection implements WMServiceStrategy {
+class LounaispaikkaWMSConnection implements WMServiceStrategy {
 
 	private static final String GET_MAP_STATIC_PART = "http://kartat.lounaispaikka.fi/wms/maakuntakaava?version=1.1.1&service=WMS&request=getmap&srs=EPSG:4326&&width=700&height=500&format=image/png&styles=&";
 	private static final String GET_CAP_REQ_ADDRESS = "/wms/maakuntakaava?version=1.1.1&service=WMS&request=GetCapabilities";
