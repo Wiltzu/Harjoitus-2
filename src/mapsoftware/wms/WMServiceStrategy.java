@@ -3,6 +3,8 @@ package mapsoftware.wms;
 import java.net.URL;
 import java.util.List;
 
+import mapsoftware.wms.domain.LayerInformation;
+
 
 /**
  * <p>WMS protocol interface for doing basic WMS requests</p>

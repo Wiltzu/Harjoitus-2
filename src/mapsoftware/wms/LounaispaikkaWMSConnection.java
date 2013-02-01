@@ -10,12 +10,12 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.List;
 
+import mapsoftware.wms.domain.LayerInformation;
+
 /**
  * <p>Class for making WMS protocol requests</p>
  * 
  * @author Ville Ahti
- * @author Aleksi Haapsaari
- * @author Johannes Miettinen
  *
  */
 class LounaispaikkaWMSConnection implements WMServiceStrategy {

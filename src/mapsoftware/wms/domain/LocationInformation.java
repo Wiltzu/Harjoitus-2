@@ -1,4 +1,4 @@
-package mapsoftware.wms;
+package mapsoftware.wms.domain;
 
 /**
  * <p>Container for the location information</p>

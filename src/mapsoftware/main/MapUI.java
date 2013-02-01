@@ -1,4 +1,3 @@
-// Kartankatseluohjelman graafinen käyttöliittymä
 package mapsoftware.main;
 
 import java.awt.BorderLayout;
@@ -19,11 +18,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import mapsoftware.wms.LayerInformation;
-import mapsoftware.wms.LocationInformation;
 import mapsoftware.wms.WMServiceFactory;
 import mapsoftware.wms.WMServiceStrategy;
+import mapsoftware.wms.domain.LayerInformation;
+import mapsoftware.wms.domain.LocationInformation;
 
+/**
+ * <p>
+ * WMSMapServiceUI made with Java's Swing library
+ * </p>
+ * 
+ * @author Ville Ahti
+ * 
+ */
 public class MapUI extends JFrame {
 
 	private WMServiceStrategy wmServiceStrategy;
@@ -159,12 +166,13 @@ public class MapUI extends JFrame {
 		}
 	}
 
-	
 	/**
-	 * <p>CheckBox that keeps information about WMS layers</p>
+	 * <p>
+	 * CheckBox that keeps information about WMS layers
+	 * </p>
 	 * 
 	 * @author Ville Ahti
-	 *
+	 * 
 	 */
 	private class LayerCheckBox extends JCheckBox {
 		private final LayerInformation layerInformation;

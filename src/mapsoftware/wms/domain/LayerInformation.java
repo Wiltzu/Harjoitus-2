@@ -1,4 +1,4 @@
-package mapsoftware.wms;
+package mapsoftware.wms.domain;
 
 /**
  * <p>Class holds WMS protocol layer information</p>
