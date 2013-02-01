@@ -20,15 +20,16 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import mapsoftware.wms.LayerInformation;
-import mapsoftware.wms.LocationArea;
-import mapsoftware.wms.LounaispaikkaCapParser;
+import mapsoftware.wms.LocationInformation;
+import mapsoftware.wms.GenericWMSCapabilitiesParser;
 import mapsoftware.wms.LounaispaikkaWMSConnection;
-import mapsoftware.wms.WMSConnectionStrategy;
+import mapsoftware.wms.WMServiceFactory;
+import mapsoftware.wms.WMServiceStrategy;
 
-public class MapDialog extends JFrame {
+public class MapUI extends JFrame {
 
-	private WMSConnectionStrategy ConStra;
-	private LocationArea Area;
+	private WMServiceStrategy wmServiceStrategy;
+	private LocationInformation Area;
 
 	private Component[] Components;
 	private JLabel imageLabel = new JLabel();
@@ -42,7 +43,8 @@ public class MapDialog extends JFrame {
 	private JButton zoomInB = new JButton("+");
 	private JButton zoomOutB = new JButton("-");
 
-	public MapDialog() throws Exception {
+	public MapUI(WMServiceStrategy wmServiceStrategy) {
+		this.wmServiceStrategy = wmServiceStrategy;
 		init();
 	}
 	
@@ -50,9 +52,8 @@ public class MapDialog extends JFrame {
 	/**
 	 * <p>Inits UI</p>
 	 * 
-	 * @throws Exception
 	 */
-	private void init() throws Exception {
+	private void init() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout());
 
@@ -61,9 +62,8 @@ public class MapDialog extends JFrame {
 		// LATAAVALLA RIVILLÄ
 
 		// NS. Default position
-		Area = new LocationArea(22.1, 60.4, 22.3, 60.5);
-		ConStra = new LounaispaikkaWMSConnection(new LounaispaikkaCapParser());
-		List<LayerInformation> layers = ConStra.getCapabilities();
+		Area = new LocationInformation(22.1, 60.4, 22.3, 60.5);
+		List<LayerInformation> layers = wmServiceStrategy.getCapabilities();
 		// imageLabel
 		// .setIcon(new ImageIcon(
 		// ConStra.getMap(null, null)));
@@ -82,15 +82,8 @@ public class MapDialog extends JFrame {
 		leftPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		leftPanel.setMaximumSize(new Dimension(100, 600));
 
-		for (int i = 0; i < layers.size(); i++) {
-			if (i == 1) {
-				leftPanel.add(new LayerCheckBox(layers.get(i).getName(), layers
-						.get(i).getTitle(), true));
-			} else {
-				leftPanel.add(new LayerCheckBox(layers.get(i).getName(), layers
-						.get(i).getTitle(), false));
-			}
-
+		for (LayerInformation layerInfo: layers) {
+				leftPanel.add(new LayerCheckBox(layerInfo, true));
 		}
 
 		leftPanel.add(refreshB);
@@ -103,19 +96,20 @@ public class MapDialog extends JFrame {
 		leftPanel.add(zoomOutB);
 		this.Components = leftPanel.getComponents();
 
-		imageLabel.setIcon(new ImageIcon(ConStra.getMap(formatCapabilities(),
+		imageLabel.setIcon(new ImageIcon(wmServiceStrategy.getMap(formatCapabilities(),
 				this.Area.getArea())));
-		System.out.println(ConStra.getMap(null, null));
+		System.out.println(wmServiceStrategy.getMap(null, null));
 		add(imageLabel, BorderLayout.EAST);
 
 		add(leftPanel, BorderLayout.WEST);
 
 		pack();
 		setVisible(true);
+		setResizable(false);
 	}
 
 	public static void main(String[] args) throws Exception {
-		new MapDialog();
+		new MapUI(WMServiceFactory.getLounaispaikkaWMService());
 	}
 
 	// Kontrollinappien kuuntelija
@@ -188,15 +182,15 @@ public class MapDialog extends JFrame {
 
 	// Valintalaatikko, joka muistaa karttakerroksen nimen
 	private class LayerCheckBox extends JCheckBox {
-		private final String name;
+		private final LayerInformation layerInformation;
 
-		public LayerCheckBox(String name, String title, boolean selected) {
-			super(title, null, selected);
-			this.name = name;
+		public LayerCheckBox(LayerInformation layerInfo, boolean selected) {
+			super(layerInfo.getTitle(), null, selected);
+			this.layerInformation = layerInfo;
 		}
 
-		public String getName() {
-			return name;
+		public LayerInformation getLayerInformation() {
+			return layerInformation;
 		}
 
 	}
@@ -204,16 +198,13 @@ public class MapDialog extends JFrame {
 
 	/**
 	 * <p>Updates map image</p>
-	 * @throws Exception
 	 */
-	public void updateImage() throws Exception {
+	public void updateImage() {
 		new Thread() {
 			public void run() {
 				SwingUtilities.invokeLater(new MapUpdater());
 			}
 		}.start();
-
-		// imageLabel.setIcon(new ImageIcon(url));
 	}
 
 	/**
@@ -224,7 +215,7 @@ public class MapDialog extends JFrame {
 		for (Component com : this.Components) {
 			if (com instanceof LayerCheckBox)
 				if (((LayerCheckBox) com).isSelected())
-					s = s + com.getName() + ",";
+					s = s + ((LayerCheckBox) com).getLayerInformation().getName() + ",";
 		}
 		if (s.endsWith(","))
 			s = s.substring(0, s.length() - 1);
@@ -253,9 +244,9 @@ public class MapDialog extends JFrame {
 		 */
 		private void updateMap() {
 			String s = formatCapabilities();
-			System.out.println(ConStra.getMap(s, Area.getArea()));
+			System.out.println(wmServiceStrategy.getMap(s, Area.getArea()));
 			imageLabel
-					.setIcon(new ImageIcon(ConStra.getMap(s, Area.getArea())));
+					.setIcon(new ImageIcon(wmServiceStrategy.getMap(s, Area.getArea())));
 		}
 
 	}

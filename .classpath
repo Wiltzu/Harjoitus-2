@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="Libraries"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/Randal/git/Harjoitus-2/Libraries/jtidy-r938.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Ville/git/Harjoitus-2/Libraries/jtidy-r938.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

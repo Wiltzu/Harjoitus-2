@@ -6,7 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-public class WorldMapWMSConnection implements WMSConnectionStrategy {
+public class WorldMapWMSConnection implements WMServiceStrategy {
 
 	private static final String GET_MAP_STATIC_PART = "http://www2.demis.nl/WMS/wms.asp?WMS=WorldMap&WMTVER=1.0.0&request=getmap&srs=EPSG:4326&&width=700&height=500&format=image/png&styles=&";
 	private static final String GET_CAP_ADDRESS = "http://www2.demis.nl/WMS/wms.asp?WMS=WorldMap&WMTVER=1.0.0&request=capabilities";

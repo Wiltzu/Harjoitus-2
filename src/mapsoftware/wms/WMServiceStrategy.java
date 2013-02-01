@@ -8,11 +8,9 @@ import java.util.List;
  * <p>WMS protocol interface for doing basic WMS requests</p>
  * 
  * @author Ville Ahti
- * @author Aleksi Haapsaari
- * @author Johannes Miettinen
  *
  */
-public interface WMSConnectionStrategy {
+public interface WMServiceStrategy {
 	
 	 /**
 	  * <p>Protocol method for getting layers and other information</p>

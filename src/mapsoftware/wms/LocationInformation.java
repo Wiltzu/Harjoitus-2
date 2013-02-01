@@ -8,7 +8,7 @@ package mapsoftware.wms;
  * @author Ville Ahti
  * 
  */
-public class LocationArea {
+public class LocationInformation {
 	
 	private Double[] Coords = new Double[4];
 	private String LocArea;
@@ -25,7 +25,7 @@ public class LocationArea {
 	 * @param maxY Double representing maximum Y coordinate
 	 * 
 	 */
-	public LocationArea(Double minX, Double minY, Double maxX, Double maxY) {
+	public LocationInformation(Double minX, Double minY, Double maxX, Double maxY) {
 		this.Coords[0] = minX;
 		this.Coords[1] = minY;
 		this.Coords[2] = maxX;

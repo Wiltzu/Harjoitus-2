@@ -18,7 +18,7 @@ import org.w3c.tidy.Tidy;
  * @author Johannes Miettinen
  *
  */
-public class LounaispaikkaCapParser implements WMSCapabilitiesParser {
+public class GenericWMSCapabilitiesParser implements WMSCapabilitiesParser {
 
 	/* (non-Javadoc)
 	 * @see mapsoftware.wms.WMSCapabilitiesParser#parseDocument(java.io.InputStream)
