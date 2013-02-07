@@ -24,6 +24,7 @@ import mapsoftware.wms.WMServiceFactory.WMServiceProvider;
 import mapsoftware.wms.WMServiceStrategy;
 import mapsoftware.wms.domain.LayerInformation;
 import mapsoftware.wms.domain.LocationInformation;
+import mapsoftware.wms.domain.ServiceCapabilitiesInformation;
 
 /**
  * <p>
@@ -51,7 +52,8 @@ public class MapUI extends JFrame {
     private final JButton btnZoomOut = new JButton("-");
 
     public static void main(String[] args) {
-        new MapUI(WMServiceFactory.getWMService(WMServiceProvider.WORLD_MAP));
+        new MapUI(
+                WMServiceFactory.getWMService(WMServiceProvider.LOUNAISPAIKKA));
     }
 
     public MapUI(WMServiceStrategy wmServiceStrategy) {
@@ -71,8 +73,10 @@ public class MapUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(new BorderLayout());
 
-        Area = new LocationInformation(22.1, 60.4, 22.3, 60.5);
-        List<LayerInformation> layers = wmServiceStrategy.getCapabilities();
+        ServiceCapabilitiesInformation serviceInfo = wmServiceStrategy
+                .getCapabilities();
+        List<LayerInformation> layers = serviceInfo.getLayerInformations();
+        Area = serviceInfo.getLocationInformation();
 
         attachButtonListeners();
 

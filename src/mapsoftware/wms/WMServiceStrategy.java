@@ -1,9 +1,8 @@
 package mapsoftware.wms;
 
 import java.net.URL;
-import java.util.List;
 
-import mapsoftware.wms.domain.LayerInformation;
+import mapsoftware.wms.domain.ServiceCapabilitiesInformation;
 
 
 /**
@@ -19,7 +18,7 @@ public interface WMServiceStrategy {
 	  * 
 	 * @return list of services map layers. 
 	 */
-	List<LayerInformation> getCapabilities();
+	ServiceCapabilitiesInformation getCapabilities();
 	 
 	
 	 /**

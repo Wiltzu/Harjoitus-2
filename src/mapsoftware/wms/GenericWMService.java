@@ -4,9 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 
-import mapsoftware.wms.domain.LayerInformation;
+import mapsoftware.wms.domain.ServiceCapabilitiesInformation;
 import mapsoftware.wms.servicetype.WMServiceType;
 
 //TODO: make this class as generic as possible
@@ -31,7 +30,8 @@ public class GenericWMService implements WMServiceStrategy {
      * @see mapsoftware.wms.WMSConnectionStrategy#getCapabilities()
      */
     @Override
-    public List<LayerInformation> getCapabilities() {
+    public ServiceCapabilitiesInformation getCapabilities() {
+        ServiceCapabilitiesInformation capabilitiesInfo;
         URL url = null;
         InputStream is = null;
         try {
@@ -46,8 +46,10 @@ public class GenericWMService implements WMServiceStrategy {
         }
 
         parser.parseDocument(is);
-        parser.getLocationBoundaries();
-        return parser.getLayerInformation();
+        capabilitiesInfo = new ServiceCapabilitiesInformation(
+                parser.getLayerInformation(), parser.getLocationBoundaries());
+
+        return capabilitiesInfo;
     }
 
     /*
