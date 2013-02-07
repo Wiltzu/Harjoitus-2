@@ -4,8 +4,6 @@ package mapsoftware.wms.domain;
  * <p>Class holds WMS protocol layer information</p>
  * 
  * @author Ville Ahti
- * @author Aleksi Haapsaari
- * @author Johannes Miettinen
  *
  */
 public class LayerInformation {

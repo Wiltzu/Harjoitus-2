@@ -22,49 +22,49 @@ import org.w3c.tidy.Tidy;
  */
 class GenericWMSCapabilitiesParser implements WMSCapabilitiesParser {
 
-	private static final String LAYER_TAG = "Layer";
-	private List<LayerInformation> layerInformation;
+    private static final String LAYER_TAG = "Layer";
+    private List<LayerInformation> layerInformation;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * mapsoftware.wms.WMSCapabilitiesParser#parseDocument(java.io.InputStream)
-	 */
-	@Override
-	public List<LayerInformation> parseDocument(InputStream xmlDocument) {
-		Document doc = null;
-		Tidy tidy = new Tidy();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * mapsoftware.wms.WMSCapabilitiesParser#parseDocument(java.io.InputStream)
+     */
+    @Override
+    public List<LayerInformation> parseDocument(InputStream xmlDocument) {
+        Document doc = null;
+        Tidy tidy = new Tidy();
+        if (layerInformation == null) {
+            tidy.setXmlTags(true); // Defines that doc contains XML
+            doc = tidy.parseDOM(xmlDocument, null);
 
-		tidy.setXmlTags(true); // Defines that doc contains XML
-		doc = tidy.parseDOM(xmlDocument, null);
-		if (layerInformation == null) {
-			parseData(doc);
-		}
+            parseData(doc);
+        }
 
-		return layerInformation;
-	}
+        return layerInformation;
+    }
 
-	private void parseData(Document doc) {
-		layerInformation = new ArrayList<LayerInformation>();
-		NodeList nl = doc.getElementsByTagName(LAYER_TAG);
-		for (int i = 0; i < nl.getLength(); i++) {
-			Node node = nl.item(i);
-			Element el = (Element) node;
-			NodeList layerNodes = el.getChildNodes();
-			Node name = layerNodes.item(0);
-			Node title = layerNodes.item(1);
-			// TODO
-			if (name == null || title == null || name.getFirstChild() == null
-					|| title.getFirstChild() == null) {
-			} else {
-				LayerInformation info = new LayerInformation(name
-						.getFirstChild().getNodeValue(), title.getFirstChild()
-						.getNodeValue());
-				layerInformation.add(info);
-			}
+    private void parseData(Document doc) {
+        layerInformation = new ArrayList<LayerInformation>();
+        NodeList nl = doc.getElementsByTagName(LAYER_TAG);
+        for (int i = 0; i < nl.getLength(); i++) {
+            Node node = nl.item(i);
+            Element el = (Element) node;
+            NodeList layerNodes = el.getChildNodes();
+            Node name = layerNodes.item(0);
+            Node title = layerNodes.item(1);
+            // TODO: Dummy block
+            if (name == null || title == null || name.getFirstChild() == null
+                    || title.getFirstChild() == null) {
+            } else {
+                LayerInformation info = new LayerInformation(name
+                        .getFirstChild().getNodeValue(), title.getFirstChild()
+                        .getNodeValue());
+                layerInformation.add(info);
+            }
 
-		}
-	}
+        }
+    }
 
 }

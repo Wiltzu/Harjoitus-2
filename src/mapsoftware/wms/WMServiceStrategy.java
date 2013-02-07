@@ -29,5 +29,6 @@ public interface WMServiceStrategy {
 	 * @param area location parameters
 	 * @return URL which has the requested map 
 	 */
+	//TODO: improve interface
 	URL getMap(String layers, String area);
 }
