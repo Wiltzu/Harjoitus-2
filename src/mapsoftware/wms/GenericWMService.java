@@ -45,7 +45,9 @@ public class GenericWMService implements WMServiceStrategy {
             e.printStackTrace();
         }
 
-        return parser.parseDocument(is);
+        parser.parseDocument(is);
+        parser.getLocationBoundaries();
+        return parser.getLayerInformation();
     }
 
     /*

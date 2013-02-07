@@ -1,5 +1,7 @@
 package mapsoftware.wms.domain;
 
+import java.util.Arrays;
+
 /**
  * <p>
  * Container for the location information
@@ -171,4 +173,10 @@ public class LocationInformation {
         }
 
     }// formatArea
+
+    @Override
+    public String toString() {
+        return "LocationInformation [Coords=" + Arrays.toString(Coords) + "]";
+    }
+
 }

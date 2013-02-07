@@ -51,8 +51,7 @@ public class MapUI extends JFrame {
     private final JButton btnZoomOut = new JButton("-");
 
     public static void main(String[] args) {
-        new MapUI(
-                WMServiceFactory.getWMService(WMServiceProvider.LOUNAISPAIKKA));
+        new MapUI(WMServiceFactory.getWMService(WMServiceProvider.WORLD_MAP));
     }
 
     public MapUI(WMServiceStrategy wmServiceStrategy) {

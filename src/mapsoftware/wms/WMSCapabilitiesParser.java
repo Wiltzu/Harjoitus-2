@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import mapsoftware.wms.domain.LayerInformation;
+import mapsoftware.wms.domain.LocationInformation;
 
 public interface WMSCapabilitiesParser {
     // TODO: parseDocument parses only document and return nothing, getLayers
@@ -14,10 +15,14 @@ public interface WMSCapabilitiesParser {
      * Returns a List containing LayerInformation fetched from the InputStream.
      * </p>
      * 
-     * @param xmlDocument
+     * @param wmsXMLDocument
      *            InputStream containing getCapabilities request xml
      * @return List containing LayerInformation.
      * 
      */
-    List<LayerInformation> parseDocument(InputStream xmlDocument);
+    void parseDocument(InputStream wmsXMLDocument);
+
+    List<LayerInformation> getLayerInformation();
+
+    LocationInformation getLocationBoundaries();
 }
