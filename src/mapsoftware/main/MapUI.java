@@ -86,7 +86,7 @@ public class MapUI extends JFrame {
         leftPanel.add(pnlCheckBox);
 
         for (LayerInformation layerInfo : layers) {
-            pnlCheckBox.add(new LayerCheckBox(layerInfo, true));
+            pnlCheckBox.add(new LayerCheckBox(layerInfo, false));
         }
 
         leftPanel.add(btnRefresh);

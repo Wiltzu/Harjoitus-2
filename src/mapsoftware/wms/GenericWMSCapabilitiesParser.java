@@ -58,9 +58,11 @@ class GenericWMSCapabilitiesParser implements WMSCapabilitiesParser {
             if (name == null || title == null || name.getFirstChild() == null
                     || title.getFirstChild() == null) {
             } else {
+                // space in the parameter fix
                 LayerInformation info = new LayerInformation(name
-                        .getFirstChild().getNodeValue(), title.getFirstChild()
-                        .getNodeValue());
+                        .getFirstChild().getNodeValue().replace(" ", "+"),
+                        title.getFirstChild().getNodeValue());
+
                 layerInformation.add(info);
             }
 
