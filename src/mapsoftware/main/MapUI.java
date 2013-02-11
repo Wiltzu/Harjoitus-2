@@ -24,6 +24,7 @@ import mapsoftware.wms.WMServiceFactory.WMServiceProvider;
 import mapsoftware.wms.WMServiceStrategy;
 import mapsoftware.wms.domain.LayerInformation;
 import mapsoftware.wms.domain.LocationInformation;
+import mapsoftware.wms.domain.LocationInformation.Operation;
 import mapsoftware.wms.domain.ServiceCapabilitiesInformation;
 
 /**
@@ -37,9 +38,10 @@ import mapsoftware.wms.domain.ServiceCapabilitiesInformation;
 public class MapUI extends JFrame {
 
     private final WMServiceStrategy wmServiceStrategy;
-    private LocationInformation Area;
+    private LocationInformation area;
 
-    private final JLabel imageLabel = new JLabel();
+    // TODO: Move installation
+    private final JLabel lblMapImage = new JLabel();
     private final JLayeredPane leftPanel = new JLayeredPane();
     private JPanel pnlCheckBox;
 
@@ -52,8 +54,7 @@ public class MapUI extends JFrame {
     private final JButton btnZoomOut = new JButton("-");
 
     public static void main(String[] args) {
-        new MapUI(
-                WMServiceFactory.getWMService(WMServiceProvider.LOUNAISPAIKKA));
+        new MapUI(WMServiceFactory.getWMService(WMServiceProvider.WORLD_MAP));
     }
 
     public MapUI(WMServiceStrategy wmServiceStrategy) {
@@ -69,14 +70,15 @@ public class MapUI extends JFrame {
      * 
      */
     private void init() {
-        // TODO: Edit layout: improve panel organization and whole appearance
+        // TODO: Edit layout: improve panel organization and whole appearance.
+        // Make MenuBar
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(new BorderLayout());
 
         ServiceCapabilitiesInformation serviceInfo = wmServiceStrategy
                 .getCapabilities();
         List<LayerInformation> layers = serviceInfo.getLayerInformations();
-        Area = serviceInfo.getLocationInformation();
+        area = serviceInfo.getLocationInformation();
 
         attachButtonListeners();
 
@@ -89,7 +91,7 @@ public class MapUI extends JFrame {
         leftPanel.add(pnlCheckBox);
 
         for (LayerInformation layerInfo : layers) {
-            pnlCheckBox.add(new LayerCheckBox(layerInfo, false));
+            pnlCheckBox.add(new LayerCheckBox(layerInfo, true));
         }
 
         leftPanel.add(btnRefresh);
@@ -101,10 +103,10 @@ public class MapUI extends JFrame {
         leftPanel.add(btnZoomIn);
         leftPanel.add(btnZoomOut);
 
-        imageLabel.setIcon(new ImageIcon(wmServiceStrategy.getMap(
-                formatCapabilities(), this.Area.getArea())));
+        lblMapImage.setIcon(new ImageIcon(wmServiceStrategy.getMap(
+                formatCapabilities(), area.getCurrentCoordinantsAsString())));
 
-        add(imageLabel, BorderLayout.EAST);
+        add(lblMapImage, BorderLayout.EAST);
         add(leftPanel, BorderLayout.WEST);
 
         pack();
@@ -133,31 +135,31 @@ public class MapUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == btnRefresh) {
-                updateImage();
+                updateMapImage();
             }
             if (e.getSource() == btnLeft) {
-                Area.move("L");
-                updateImage();
+                area.move(Operation.LEFT);
+                updateMapImage();
             }
             if (e.getSource() == btnRight) {
-                Area.move("R");
-                updateImage();
+                area.move(Operation.RIGHT);
+                updateMapImage();
             }
             if (e.getSource() == btnUp) {
-                Area.move("U");
-                updateImage();
+                area.move(Operation.UP);
+                updateMapImage();
             }
             if (e.getSource() == btnDown) {
-                Area.move("D");
-                updateImage();
+                area.move(Operation.DOWN);
+                updateMapImage();
             }
             if (e.getSource() == btnZoomIn) {
-                Area.move("I");
-                updateImage();
+                area.move(Operation.ZOOM_IN);
+                updateMapImage();
             }
             if (e.getSource() == btnZoomOut) {
-                Area.move("O");
-                updateImage();
+                area.move(Operation.ZOOM_OUT);
+                updateMapImage();
             }
         }
     }
@@ -189,7 +191,7 @@ public class MapUI extends JFrame {
      * Updates map image
      * </p>
      */
-    private void updateImage() {
+    private void updateMapImage() {
         new Thread() {
             @Override
             public void run() {
@@ -202,7 +204,7 @@ public class MapUI extends JFrame {
      * @return request parameter from chosen LayerCheckbox components
      */
     // TODO: Check that at least one is checked to prevent no layers checked
-    // errors with WMS
+    // errors with WMS (DO EVERYTHING Differently)
     private String formatCapabilities() {
         String s = "";
         for (Component comLayer : pnlCheckBox.getComponents()) {
@@ -244,9 +246,11 @@ public class MapUI extends JFrame {
          */
         private void updateMap() {
             String s = formatCapabilities();
-            System.out.println(wmServiceStrategy.getMap(s, Area.getArea()));
-            imageLabel.setIcon(new ImageIcon(wmServiceStrategy.getMap(s,
-                    Area.getArea())));
+            // TODO: Delete printing
+            System.out.println(wmServiceStrategy.getMap(s,
+                    area.getCurrentCoordinantsAsString()));
+            lblMapImage.setIcon(new ImageIcon(wmServiceStrategy.getMap(s,
+                    area.getCurrentCoordinantsAsString())));
         }
 
     }
