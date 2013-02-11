@@ -18,7 +18,7 @@ public class LocationInformation {
     private final double[] currentCoords;
     private final double angle;
     private static final int MIN_X = 0, MIN_Y = 1, MAX_X = 2, MAX_Y = 3;
-    private double latDistance, longDistance;
+    private double latDistance, longDistance, latMovement, longMovement;
     // TODO: do with enums
     private static double[] zoomLevels = { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7,
             0.8, 0.9, 1 };
@@ -55,7 +55,8 @@ public class LocationInformation {
         currentCoords = maxCoords.clone();
         this.angle = (maxY - minY) / (maxX - minX);
         zoomLevel = 9;
-        countMovements();
+        countDistances();
+        updateMovement();
     }
 
     /**
@@ -129,22 +130,23 @@ public class LocationInformation {
      *            changed.
      */
     public void move(Operation operation) {
+        updateMovement();
         switch (operation) {
         case LEFT:
-            currentCoords[MIN_X] -= 0.01;
-            currentCoords[MAX_X] -= 0.01;
+            currentCoords[MIN_X] -= longMovement;
+            currentCoords[MAX_X] -= longMovement;
             break;
         case RIGHT:
-            currentCoords[MIN_X] += 0.01;
-            currentCoords[MAX_X] += 0.01;
+            currentCoords[MIN_X] += longMovement;
+            currentCoords[MAX_X] += longMovement;
             break;
         case UP:
-            currentCoords[MIN_Y] += 0.01;
-            currentCoords[MAX_Y] += 0.01;
+            currentCoords[MIN_Y] += latMovement;
+            currentCoords[MAX_Y] += latMovement;
             break;
         case DOWN:
-            currentCoords[MIN_Y] -= 0.01;
-            currentCoords[MAX_Y] -= 0.01;
+            currentCoords[MIN_Y] -= latMovement;
+            currentCoords[MAX_Y] -= latMovement;
             break;
         case ZOOM_IN:
             // TODO: reduce the gap between min and max not their location!
@@ -206,10 +208,6 @@ public class LocationInformation {
             currentCoords[MIN_Y] += coordsFixes[MAX_Y];
             currentCoords[MAX_X] += coordsFixes[MIN_X];
             currentCoords[MAX_Y] += coordsFixes[MIN_Y];
-            // currentCoords[MIN_X] -= 0.003 * this.angle;
-            // currentCoords[MIN_Y] -= 0.003;
-            // currentCoords[MAX_X] += 0.003 * this.angle;
-            // currentCoords[MAX_Y] += 0.003;
             break;
         }
     }
@@ -221,7 +219,7 @@ public class LocationInformation {
                 + ", angle=" + angle + "]";
     }
 
-    private void countMovements() {
+    private void countDistances() {
         longDistance = (maxCoords[MAX_X] - maxCoords[MIN_X]);
         latDistance = (maxCoords[MAX_Y] - maxCoords[MIN_Y]);
         zoomLatDistances = new double[10];
@@ -232,8 +230,13 @@ public class LocationInformation {
         }
     }
 
-    private double formatDouble(double dbl) {
-        int temp = (int) (dbl * 10000);
-        return ((double) temp) / 10000;
+    private void updateMovement() {
+        if (zoomLevel != 9) {
+            latMovement = (currentCoords[MAX_Y] - currentCoords[MIN_Y]) / 10;
+            longMovement = (currentCoords[MAX_X] - currentCoords[MIN_X]) / 10;
+        } else {
+            latMovement = 0;
+            longMovement = 0;
+        }
     }
 }
