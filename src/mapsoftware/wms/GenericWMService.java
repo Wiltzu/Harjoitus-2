@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
+import mapsoftware.wms.domain.LocationInformation;
+import mapsoftware.wms.domain.LayerInformation;
 import mapsoftware.wms.domain.ServiceCapabilitiesInformation;
 import mapsoftware.wms.servicetype.WMServiceType;
 
@@ -59,15 +62,24 @@ public class GenericWMService implements WMServiceStrategy {
      * java.lang.String)
      */
     @Override
-    public URL getMap(String layers, String area) {
+    public URL getMap(List<LayerInformation> layers, LocationInformation locationInfo) {
         try {
+        	String layersAsString = generateLayersAsString(layers);
             // dynamic URL generation here
-            return new URL(serviceType.getMapStaticURL() + "layers=" + layers
-                    + "&" + "bbox=" + area);
+            return new URL(serviceType.getMapStaticURL() + "layers=" + layersAsString
+                    + "&" + "bbox=" + locationInfo.getCurrentCoordinantsAsString());
 
         } catch (MalformedURLException e) {
             return null;
         }
     }
+
+	private String generateLayersAsString(List<LayerInformation> layers) {
+		String layersAsString = "";
+		for(LayerInformation layer : layers) {
+			layersAsString += layer.getName() + ",";
+		}
+		return layersAsString.substring(0, layersAsString.length() - 1);
+	}
 
 }

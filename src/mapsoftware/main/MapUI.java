@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -39,6 +40,7 @@ public class MapUI extends JFrame {
 
     private final WMServiceStrategy wmServiceStrategy;
     private LocationInformation area;
+    private List<LayerInformation> selectedLayers;
 
     // TODO: Move installation
     private final JLabel lblMapImage = new JLabel();
@@ -102,9 +104,10 @@ public class MapUI extends JFrame {
         leftPanel.add(btnDown);
         leftPanel.add(btnZoomIn);
         leftPanel.add(btnZoomOut);
-
+        
+        checkSelectedLayers();
         lblMapImage.setIcon(new ImageIcon(wmServiceStrategy.getMap(
-                formatCapabilities(), area.getCurrentCoordinantsAsString())));
+                selectedLayers, area)));
 
         add(lblMapImage, BorderLayout.EAST);
         add(leftPanel, BorderLayout.WEST);
@@ -205,20 +208,17 @@ public class MapUI extends JFrame {
      */
     // TODO: Check that at least one is checked to prevent no layers checked
     // errors with WMS (DO EVERYTHING Differently)
-    private String formatCapabilities() {
-        String s = "";
+    private void checkSelectedLayers() {
+    	if(selectedLayers == null) {
+    		selectedLayers = new ArrayList<LayerInformation>();
+    	}
+    	selectedLayers.clear();
+      
         for (Component comLayer : pnlCheckBox.getComponents()) {
             if (((LayerCheckBox) comLayer).isSelected()) {
-                s = s
-                        + ((LayerCheckBox) comLayer).getLayerInformation()
-                                .getName() + ",";
+                        selectedLayers.add(((LayerCheckBox) comLayer).getLayerInformation());
             }
         }
-        if (s.endsWith(",")) {
-            s = s.substring(0, s.length() - 1);
-        }
-
-        return s;
     }
 
     /**
@@ -245,12 +245,9 @@ public class MapUI extends JFrame {
          * </p>
          */
         private void updateMap() {
-            String s = formatCapabilities();
-            // TODO: Delete printing
-            System.out.println(wmServiceStrategy.getMap(s,
-                    area.getCurrentCoordinantsAsString()));
-            lblMapImage.setIcon(new ImageIcon(wmServiceStrategy.getMap(s,
-                    area.getCurrentCoordinantsAsString())));
+            checkSelectedLayers();
+            lblMapImage.setIcon(new ImageIcon(wmServiceStrategy.getMap(selectedLayers,
+                    area)));
         }
 
     }

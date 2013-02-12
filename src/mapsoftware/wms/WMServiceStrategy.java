@@ -1,7 +1,10 @@
 package mapsoftware.wms;
 
 import java.net.URL;
+import java.util.List;
 
+import mapsoftware.wms.domain.LayerInformation;
+import mapsoftware.wms.domain.LocationInformation;
 import mapsoftware.wms.domain.ServiceCapabilitiesInformation;
 
 
@@ -25,9 +28,9 @@ public interface WMServiceStrategy {
 	  * <p>Returns a URL to requested map.</p>
 	  * 
 	 * @param layers gotten from getCapabilities
-	 * @param area location parameters
+	 * @param locationInfo location parameters
 	 * @return URL which has the requested map 
 	 */
 	//TODO: improve interface
-	URL getMap(String layers, String area);
+	URL getMap(List<LayerInformation> layers, LocationInformation locationInfo);
 }
